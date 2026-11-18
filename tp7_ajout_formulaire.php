@@ -8,13 +8,18 @@
   3. Afficher un lien vers la liste des jeux (tp3_liste.php).
 
   Test : ajouter le jeu Assassin's Creed. Est-ce que ça fonctionne ?
+  Réponse : oui, car la requête préparée envoie le titre comme donnée
+  (l'apostrophe n'est pas interprétée comme du SQL).
 -->
+<?php require 'connexion.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8">
     <title>TP 7 - Ajouter un jeu</title>
 </head>
+
 <body>
     <h1>Ajouter un jeu</h1>
 
@@ -26,8 +31,25 @@
         <button type="submit">Ajouter</button>
     </form>
 
-<?php
+    <?php
+    if (isset($_POST['titre'])) {
+        $titre = $_POST['titre'];
+        $genre = $_POST['genre'];
+        $annee = $_POST['annee'];
+        $note = $_POST['note'];
 
-?>
+        $req = $base->prepare('INSERT INTO jeu (titre, genre, annee, note) VALUES (:titre, :genre, :annee, :note)');
+        $req->execute([
+            'titre' => $titre,
+            'genre' => $genre,
+            'annee' => $annee,
+            'note' => $note
+        ]);
+
+        echo '<p>Jeu ajouté ! Son id est : ' . $base->lastInsertId() . '</p>';
+        echo '<p><a href="tp3_liste.php">Voir la liste des jeux</a></p>';
+    }
+    ?>
 </body>
+
 </html>
