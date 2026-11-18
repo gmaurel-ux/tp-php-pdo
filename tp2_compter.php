@@ -8,13 +8,19 @@
 -->
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <title>TP 2 - Compter les jeux</title>
-</head>
-<body>
-<?php
 
-?>
+<head>
+  <meta charset="utf-8">
+  <title>TP 2 - Compter les jeux</title>
+</head>
+
+<body>
+  <?php
+  require("connexion.php");
+  $resultat = $base->query('SELECT * FROM jeu');
+  echo "Nombre de personnes:" . $resultat->rowCount();
+  $resultat->closeCursor();
+  ?>
 </body>
+
 </html>
