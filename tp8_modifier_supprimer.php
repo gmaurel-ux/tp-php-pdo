@@ -34,7 +34,7 @@
         <button type="submit">Supprimer</button>
     </form>
 
-    <h2>Liste des jeux</h2>
+    <a href="tp3_liste.php">voir la liste des jeux</a>
 <?php
 
 ?>
