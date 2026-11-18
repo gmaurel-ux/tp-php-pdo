@@ -8,13 +8,17 @@
 
   Test : taper dans l'URL  ?genre=x' OR '1'='1
   Que se passe-t-il ? Pourquoi ?
+  L’injection ne peut donc pas modifier la structure de la requête.
 -->
+<?php require 'connexion.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8">
     <title>TP 6 - Recherche par genre</title>
 </head>
+
 <body>
 
     <form method="get">
@@ -28,8 +32,20 @@
         <button type="submit">Rechercher</button>
     </form>
 
-<?php
+    <?php
+    if (isset($_GET['genre'])) {
+        $genre = $_GET['genre'];
 
-?>
+        $req = $base->prepare('SELECT titre, note FROM jeu WHERE genre = :genre');
+        $req->execute(['genre' => $genre]);
+        $jeux = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        echo '<p>' . count($jeux) . ' jeu(x) trouvé(s) :</p>';
+        foreach ($jeux as $jeu) {
+            echo htmlspecialchars($jeu['titre'], ENT_QUOTES, 'UTF-8') . ' : ' . (int) $jeu['note'] . '/20<br>';
+        }
+    }
+    ?>
 </body>
+
 </html>
